@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * An event is launchable and contains a memberSet for invites and a memberSet for 
  * attendees. Since invites are removed as they attend, those in the invites list after they are closed
- * are non-attendees.
+ * are non-attendees. Two events are the same iff they have the same description string.
  * @author Steven
  */
 public class Event 
@@ -79,7 +79,7 @@ public class Event
             }
         } else
         {
-            System.err.println("Invites is null!");
+            System.err.println("Invites is null! (No one invited)");
             return false;
         }
     }
@@ -96,8 +96,7 @@ public class Event
     }
 
     @Override
-    public boolean equals(Object obj) 
-    {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -105,17 +104,18 @@ public class Event
             return false;
         }
         final Event other = (Event) obj;
-        if (!Objects.equals(this.invites, other.invites)) {
-            return false;
-        }
-        if (!Objects.equals(this.attendees, other.attendees)) {
-            return false;
-        }
         if (!Objects.equals(this.Description, other.Description)) {
             return false;
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" + "invites=" + invites + ", Description=" + Description + '}';
+    }
+
+    
 
     public MemberSet getInvites() {
         return invites;
