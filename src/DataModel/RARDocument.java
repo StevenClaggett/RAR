@@ -13,7 +13,7 @@ import java.util.Objects;
  * run of the RAR system.
  * @author Steven
  */
-public class RARDocument 
+public class RARDocument implements java.io.Serializable
 {
     
     /**
@@ -103,7 +103,5 @@ public class RARDocument
         }
         return true;
     }
-    
-    
     
 }

@@ -12,7 +12,7 @@ import java.util.Objects;
  * are non-attendees. Two events are the same iff they have the same description string.
  * @author Steven
  */
-public class Event 
+public class Event implements java.io.Serializable
 {
     
     private MemberSet invites;

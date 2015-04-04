@@ -11,7 +11,7 @@ import java.util.Objects;
  * This is the list the user selects from when creating an invite list.
  * @author Steven
  */
-public class MemberSet 
+public class MemberSet implements java.io.Serializable
 {
 
     /**
