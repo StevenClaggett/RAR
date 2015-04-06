@@ -5,7 +5,9 @@
  */
 package view;
 import DataModel.*;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Steven
@@ -47,7 +49,7 @@ public class CreateEventGUI extends javax.swing.JFrame {
             "Last Name", "First Name", "Email"
         }));
         
-        System.out.println("Here");
+        
         
     }
     
@@ -81,6 +83,7 @@ public class CreateEventGUI extends javax.swing.JFrame {
         invitesTable = new javax.swing.JTable();
         createButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        clearInvitesButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +159,11 @@ public class CreateEventGUI extends javax.swing.JFrame {
         rosterTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         searchButton.setText("Search");
+        searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchButtonMouseClicked(evt);
+            }
+        });
 
         addButton.setText("Add Current Selection to Invites");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -195,11 +203,23 @@ public class CreateEventGUI extends javax.swing.JFrame {
         jScrollPane3.setViewportView(invitesTable);
 
         createButton.setText("Create Event");
+        createButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createButtonMouseClicked(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
         cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cancelButtonMouseClicked(evt);
+            }
+        });
+
+        clearInvitesButton.setText("Clear Invites");
+        clearInvitesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearInvitesButtonMouseClicked(evt);
             }
         });
 
@@ -237,7 +257,10 @@ public class CreateEventGUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel7)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(clearInvitesButton))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 24, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -267,7 +290,9 @@ public class CreateEventGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(clearInvitesButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -281,7 +306,7 @@ public class CreateEventGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
-        this.setVisible(false);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_cancelButtonMouseClicked
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
@@ -300,8 +325,8 @@ public class CreateEventGUI extends javax.swing.JFrame {
         for (int i = 0; i < rows; i++)
         {
             tableBuilder[i][0] = builder.getRosterSet().get(i).getlName();
-            tableBuilder[i][1] = builder.getRosterSet().get(i).getlName();
-            tableBuilder[i][2] = builder.getRosterSet().get(i).getlName();
+            tableBuilder[i][1] = builder.getRosterSet().get(i).getfName();
+            tableBuilder[i][2] = builder.getRosterSet().get(i).getEmail();
         }
         
         invitesTable.setModel(new javax.swing.table.DefaultTableModel(tableBuilder, new String[]{
@@ -309,6 +334,93 @@ public class CreateEventGUI extends javax.swing.JFrame {
         }));
         
     }//GEN-LAST:event_addButtonMouseClicked
+
+    private void clearInvitesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearInvitesButtonMouseClicked
+        builder = new MemberSet();
+        invitesTable.setModel(new javax.swing.table.DefaultTableModel(new String[0][0], new String[]{
+            "Last Name", "First Name", "Email"
+        }));
+    }//GEN-LAST:event_clearInvitesButtonMouseClicked
+
+    private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+        String f = firstNameField.getText();
+        String l = lastNameField.getText();
+        
+        MemberSet searchResults = new MemberSet();
+        
+        ArrayList<Member> localList = doc.getRoster().getRosterSet();
+        
+        for (Member m: localList)
+        {
+            if ((f.length() != 0 && m.getfName().toLowerCase().contains(f.toLowerCase().subSequence(0, f.length()))) || (l.length() != 0 && m.getlName().toLowerCase().contains(l.toLowerCase().subSequence(0, l.length()))))
+            {
+                searchResults.addMember(m);
+            }
+            
+            if (l.length() == 0 && f.length() == 0)
+            {
+                searchResults.addMember(m);
+            }
+        }
+        
+        onScreen = new Member[searchResults.getRosterSet().size()];
+        
+        for (int i = 0; i < searchResults.getRosterSet().size(); i++)
+        {
+            onScreen[i] = searchResults.getRosterSet().get(i);
+        }
+        
+        int columns = 3;
+        int rows = searchResults.getRosterSet().size();
+        String[][] tableBuilder = new String[rows][columns];
+        
+        for (int i = 0; i < rows; i++)
+        {
+            tableBuilder[i][0] = onScreen[i].getlName();
+            tableBuilder[i][1] = onScreen[i].getfName();
+            tableBuilder[i][2] = onScreen[i].getEmail();
+        }
+        
+        rosterTable.setModel(new javax.swing.table.DefaultTableModel(tableBuilder, new String[]{
+            "Last Name", "First Name", "Email"
+        }));
+        
+        
+        
+    }//GEN-LAST:event_searchButtonMouseClicked
+
+    private void createButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseClicked
+        //System.out.println("Onscreen in size" + onScreen.length);
+        
+        String name = nameTextArea.getText();
+        
+        if (name.length() != 0)
+        {
+            if (builder.getRosterSet().size() > 0)
+            {
+                Event toAdd = new Event(builder, name);
+                if (!doc.getFutureEvents().contains(toAdd) && !doc.getCompletedEvents().contains(toAdd))
+                {
+                    if (doc.getFutureEvents().add(toAdd))
+                    {
+                        JOptionPane.showMessageDialog(this, "Event with " + builder.getRosterSet().size() + " invites added successfuly.");
+                        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                    }
+                    
+                } else
+                {
+                    JOptionPane.showMessageDialog(this, "An event with that name/description already exists.");
+                }
+            } else
+            {
+                JOptionPane.showMessageDialog(this, "Please select at least one invite.");
+            }
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a name or description for the event.");
+        }
+        
+    }//GEN-LAST:event_createButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -342,8 +454,19 @@ public class CreateEventGUI extends javax.swing.JFrame {
         dummy.getRoster().addMember(new Member(1, "Steven", "Claggett"));
         dummy.getRoster().addMember(new Member(2, "Chris", "Reilly"));
         dummy.getRoster().addMember(new Member(3, "Jamal", "Almoussli"));
-        dummy.getRoster().addMember(new Member(4, "Vangelis", "Metsis"));
-        System.out.println("???");
+        dummy.getRoster().addMember(new Member(4, "Vangelis", "Koch"));
+        dummy.getRoster().addMember(new Member(5, "Geroge", "Puterscmidt"));
+        dummy.getRoster().addMember(new Member(6, "Jeoff", "Butcher"));
+        dummy.getRoster().addMember(new Member(7, "Kris", "Baker"));
+        dummy.getRoster().addMember(new Member(8, "Samantha", "Butler"));
+        dummy.getRoster().addMember(new Member(9, "Lady", "Albertson"));
+        dummy.getRoster().addMember(new Member(11, "Evlyn", "Busch"));
+        dummy.getRoster().addMember(new Member(22, "Lori", "Logan"));
+        dummy.getRoster().addMember(new Member(33, "Peter", "Rusnak"));
+        dummy.getRoster().addMember(new Member(44, "Chinom", "Obama"));
+        dummy.getRoster().addMember(new Member(55, "Samuel", "Greneir"));
+        dummy.getRoster().addMember(new Member(66, "Esther", "Anderson"));
+        dummy.getRoster().addMember(new Member(77, "Dick", "Dyke"));
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -355,6 +478,7 @@ public class CreateEventGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JButton clearInvitesButton;
     private javax.swing.JButton createButton;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JTable invitesTable;
