@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package view;
-
+import DataModel.*;
 /**
  *
  * @author Steven
@@ -110,7 +110,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     private void CreateEventButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateEventButtonMouseClicked
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateEventGUI().setVisible(true);
+                new CreateEventGUI(new RARDocument()).setVisible(true);
             }
         });
     }//GEN-LAST:event_CreateEventButtonMouseClicked
