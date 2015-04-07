@@ -50,17 +50,44 @@ public class RARDocument implements java.io.Serializable
         }
     }
     
+    /**
+     * 
+     * @return the entire roster 
+     */
     public MemberSet getRoster() {
         return roster;
+    }
+    
+    /**
+     * @param the ID for a member
+     * @return the member
+     */
+    
+    public Member getRoster(int rfid){
+        return roster.getMember(rfid);
     }
 
     public void setRoster(MemberSet roster) {
         this.roster = roster;
     }
 
+    /**
+     * 
+     * @return an ArrayList of the events
+     */
     public ArrayList<Event> getFutureEvents() {
         return futureEvents;
     }
+    
+    /**
+     * @param the description of the event to be returned
+     * @return the event described
+     */
+    
+    public Event getFutureEvents(String description) {
+        return futureEvents.get(futureEvents.indexOf(new Event(description)));
+    }
+    
 
     public void setFutureEvents(ArrayList<Event> futureEvents) {
         this.futureEvents = futureEvents;
