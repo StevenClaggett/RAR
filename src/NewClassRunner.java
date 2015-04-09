@@ -60,6 +60,7 @@ public class NewClassRunner
         System.out.println(ms.getMember(1235).toString());
         System.out.println(m.toString());
         */
+        
     }
     
 }
