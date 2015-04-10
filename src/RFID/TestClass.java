@@ -22,6 +22,9 @@ public class TestClass implements RFIDCallable
     
     
 
+    /*
+    You must implement this in your gui form
+    */
     @Override
     public void idWasScanned(String id) {
         System.out.println("This works+ " + id);
