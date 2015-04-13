@@ -4,6 +4,16 @@
  * and open the template in the editor.
  */
 import DataModel.*;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import gnu.io.CommPortIdentifier; 
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent; 
+import gnu.io.SerialPortEventListener; 
+import java.util.Enumeration;
+import java.io.*;
 /**
  *
  * @author Steven
@@ -13,13 +23,13 @@ public class NewClassRunner
     
     public static void main(String[] args)
     {
-        RARDocument doc = new RARDocument();
+        RARDocument doc = readRAR();
         System.out.println("RARDocument created, adding new event.");
-        doc.getFutureEvents().add(new Event("Class on WednesDay"));
+        //doc.getFutureEvents().add(new Event("Class on WednesDay"));
         
         ////////////////////////////////////////////////////////////////////////
         
-        System.out.println("Event Added. Checking to confirm event added");
+        //System.out.println("Event Added. Checking to confirm event added");
         boolean b = doc.getFutureEvents().contains(new Event("Class on WednesDay"));
         if(b)
             System.out.println("Event succeddfully added.");
@@ -61,6 +71,53 @@ public class NewClassRunner
         System.out.println(m.toString());
         */
         
+        
+        writeRAR(doc);
     }
     
+    public static RARDocument readRAR()
+    {
+        RARDocument doc = null;
+        File file = new File("RARDocument.ser");
+        try
+        {
+            file.createNewFile();
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            doc = (RARDocument) in.readObject();
+            in.close();
+            fileIn.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+            return null;
+        }
+        catch(ClassNotFoundException c)
+        {
+            c.printStackTrace();
+            return null;
+        }
+        if(doc == null)
+            doc = new RARDocument();
+        
+        return doc;
+    }
+    
+    public static void writeRAR(RARDocument doc)
+    {
+        try
+        {
+            File file = new File("RARDocument.ser");
+            file.createNewFile();
+            FileOutputStream fileOut = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(doc);
+            out.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+    }
 }
