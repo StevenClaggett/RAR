@@ -15,13 +15,13 @@ public class Member implements java.io.Serializable
 {
 
     
-    private int rfid;
+    private long rfid;
     private String fName;
     private String lName;
     private String email;
     private String otherInfo;
 
-    public Member(int rfid) 
+    public Member(long rfid) 
     {
         this.rfid = rfid;
         this.fName = "No Name";
@@ -30,7 +30,7 @@ public class Member implements java.io.Serializable
         this.otherInfo = "No other information available.";
     }
     
-    public Member(int rfid, String fName, String lName, String email, String otherInfo) {
+    public Member(long rfid, String fName, String lName, String email, String otherInfo) {
         this.rfid = rfid;
         this.fName = fName;
         this.lName = lName;
@@ -38,7 +38,7 @@ public class Member implements java.io.Serializable
         this.otherInfo = otherInfo;
     }
 
-    public Member(int rfid, String fName, String lName) {
+    public Member(long rfid, String fName, String lName) {
         this.rfid = rfid;
         this.fName = fName;
         this.lName = lName;
@@ -48,14 +48,16 @@ public class Member implements java.io.Serializable
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 41 * hash + this.rfid;
-        hash = 41 * hash + Objects.hashCode(this.fName);
-        hash = 41 * hash + Objects.hashCode(this.lName);
-        hash = 41 * hash + Objects.hashCode(this.email);
-        hash = 41 * hash + Objects.hashCode(this.otherInfo);
+        int hash = 7;
+        hash = 89 * hash + (int) (this.rfid ^ (this.rfid >>> 32));
+        hash = 89 * hash + Objects.hashCode(this.fName);
+        hash = 89 * hash + Objects.hashCode(this.lName);
+        hash = 89 * hash + Objects.hashCode(this.email);
+        hash = 89 * hash + Objects.hashCode(this.otherInfo);
         return hash;
     }
+
+    
 
     @Override
     public boolean equals(Object obj) {
@@ -80,14 +82,14 @@ public class Member implements java.io.Serializable
     /**
      * @return the rfid
      */
-    public int getRfid() {
+    public long getRfid() {
         return rfid;
     }
 
     /**
      * @param rfid the rfid to set
      */
-    public void setRfid(int rfid) {
+    public void setRfid(long rfid) {
         this.rfid = rfid;
     }
 

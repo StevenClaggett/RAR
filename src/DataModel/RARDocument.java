@@ -63,7 +63,7 @@ public class RARDocument implements java.io.Serializable
      * @return the member
      */
     
-    public Member getRoster(int rfid){
+    public Member getRoster(long rfid){
         return roster.getMember(rfid);
     }
 

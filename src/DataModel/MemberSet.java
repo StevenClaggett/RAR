@@ -36,7 +36,7 @@ public class MemberSet implements java.io.Serializable
      * @param rfid
      * @return null if member was not in set 
      */
-    public Member getMember(int rfid)
+    public Member getMember(long rfid)
     {
         Member temp = new Member(rfid);
         if (rosterSet.contains(temp))
@@ -56,7 +56,7 @@ public class MemberSet implements java.io.Serializable
      * @param lName
      * @return whether the member was added or not. 
      */
-    public boolean addMember(int rfid, String fName, String lName)
+    public boolean addMember(long rfid, String fName, String lName)
     {
         Member temp = new Member(rfid, fName, lName);
         boolean InThere = rosterSet.contains(temp);
@@ -85,7 +85,7 @@ public class MemberSet implements java.io.Serializable
         
     }
     
-    public boolean removeMember(int rfid, String fName, String lName)
+    public boolean removeMember(long rfid, String fName, String lName)
     {
         Member temp = new Member(rfid, fName, lName);
         boolean InThere = rosterSet.contains(temp);

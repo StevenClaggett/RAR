@@ -29,7 +29,7 @@ public class TestClass implements RFIDCallable
     public void idWasScanned(String id) {
         System.out.println("This works+ " + id);
         try {
-        System.out.println("ID integer is " + Integer.parseInt(id, 16));    
+        System.out.println("ID integer is " + Long.parseLong(id, 16));    
         } catch (Exception e) 
         {
             
