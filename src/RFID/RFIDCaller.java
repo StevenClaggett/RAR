@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 public class RFIDCaller implements Runnable, SerialPortEventListener 
 {
+    String desiredPort = "COM3";
     CommPortIdentifier portId;
     Enumeration portList;
     String uid = "";
@@ -40,26 +41,39 @@ public class RFIDCaller implements Runnable, SerialPortEventListener
     {
         t = t_;
         portList = CommPortIdentifier.getPortIdentifiers();
-
+        boolean foundPort = false;
         while (portList.hasMoreElements()) 
         {
             portId = (CommPortIdentifier) portList.nextElement();
             if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) 
             {
-                 if (portId.getName().equals("COM3")) 
+                 if (portId.getName().equals(this.desiredPort)) 
                  {
+                    foundPort = true;
                     try 
                     {
                         serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
-                    } catch (PortInUseException e) {System.out.println(e);}
+                    } catch (PortInUseException e) 
+                    {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Scanner is already being used.");
+                        System.out.println(e);
+                    }
                     try 
                     {
                         inputStream = serialPort.getInputStream();
-                    } catch (IOException e) {System.out.println(e);}
+                    } catch (IOException e) 
+                    {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Couldn't Get Input Stream.");
+                        System.out.println(e);
+                    }
                     try 
                     {
                         serialPort.addEventListener(this);
-                    } catch (TooManyListenersException e) {System.out.println(e);}
+                    } catch (TooManyListenersException e) 
+                    {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Couldn't add listener for scanner.");
+                        System.out.println(e);
+                    }
                     serialPort.notifyOnDataAvailable(true);
                     try 
                     {
@@ -69,14 +83,24 @@ public class RFIDCaller implements Runnable, SerialPortEventListener
                             SerialPort.STOPBITS_1,
                             SerialPort.PARITY_NONE
                         );
-                    } catch (UnsupportedCommOperationException e) {System.out.println(e);}
+                    } catch (UnsupportedCommOperationException e) 
+                    {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Couldn't set up scanner.");
+                        System.out.println(e);
+                    }
                     readThread = new Thread(this);
                     readThread.start();
+                    break;
                 }
             }
         }
         
-        
+        if (!foundPort)
+        {
+            javax.swing.JOptionPane.showMessageDialog(null, "Couldn't open port: " + this.desiredPort +
+                                        "\nMake sure in device manager that the scanner is connected to this"
+                                        + " specific port.");
+        }
         
     }
 

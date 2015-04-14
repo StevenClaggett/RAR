@@ -26,15 +26,15 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="ReviewEventInfoButton" max="32767" attributes="0"/>
-                  <Component id="LaunchButton" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="LaunchButton" max="32767" attributes="0"/>
+                  <Component id="ReviewEventInfoButton" pref="158" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="CreateEventButton" max="32767" attributes="0"/>
+                  <Component id="AddMemberButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="CreateEventButton" max="32767" attributes="0"/>
-                  <Component id="AddMemberButton" min="-2" pref="150" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -42,16 +42,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="CreateEventButton" pref="87" max="32767" attributes="0"/>
+                  <Component id="LaunchButton" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="CreateEventButton" max="32767" attributes="0"/>
-                  <Component id="LaunchButton" min="-2" pref="70" max="-2" attributes="0"/>
+                  <Component id="ReviewEventInfoButton" pref="82" max="32767" attributes="0"/>
+                  <Component id="AddMemberButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="ReviewEventInfoButton" max="32767" attributes="0"/>
-                  <Component id="AddMemberButton" min="-2" pref="70" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -95,7 +95,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Add Member"/>
+        <Property name="text" type="java.lang.String" value="Add/Remove Members"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddMemberButtonActionPerformed"/>

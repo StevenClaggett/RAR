@@ -35,6 +35,7 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
         this.emailField.setEditable(false);
         this.otherInfoArea.setEditable(false);
         this.addMemberButton.setEnabled(false);
+        this.removeButton.setEnabled(false);
         
         caller = new RFID.RFIDCaller(this);
         
@@ -43,7 +44,10 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
                 @Override
                 public void windowClosing(WindowEvent e)
                 {
-                    caller.serialPort.close();
+                    if (caller.serialPort != null)
+                    {
+                        caller.serialPort.close();
+                    }
                 }
             });
         
@@ -78,6 +82,7 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
         otherInfoArea = new javax.swing.JTextArea();
         addMemberButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,10 +124,17 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
             }
         });
 
-        cancelButton.setText("Cancel");
+        cancelButton.setText("Close");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
+            }
+        });
+
+        removeButton.setText("Remove this member");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
             }
         });
 
@@ -135,44 +147,45 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(addMemberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(231, 231, 231)
+                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(IdForNewMemberField, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(emailField))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel8))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addMemberButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(278, 278, 278)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1)
-                            .addComponent(idInUseLable)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(detectedIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
-                                .addComponent(UseThisIDButton, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(IdForNewMemberField, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(emailField))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel6)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel8)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(detectedIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idInUseLable))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(UseThisIDButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -186,7 +199,9 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
                     .addComponent(jLabel2)
                     .addComponent(UseThisIDButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(idInUseLable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idInUseLable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -259,8 +274,28 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
                 if (lname.length() > 0)
                 {
                     Member toAdd = new Member(idTemp, fname, lname, email, otherinfo);
-                    doc.getRoster().addMember(toAdd);
-                    this.idInUseLable.setText("<html><font color='green'>Member was added successfully!</font></html>");
+                    if (doc.getRoster().addMember(toAdd))
+                    {
+                        this.idInUseLable.setText("<html><font color='green'>Member was added successfully!</font></html>");
+                        this.firstNameField.setText("");
+                        this.lastNameField.setText("");
+                        this.emailField.setText("");
+                        this.otherInfoArea.setText("");
+                        this.IdForNewMemberField.setText("");
+                        this.detectedIDField.setText("Scan another id...");
+                        
+                        this.UseThisIDButton.setEnabled(false);
+                        this.firstNameField.setEditable(false);
+                        this.lastNameField.setEditable(false);
+                        this.emailField.setEditable(false);
+                        this.otherInfoArea.setEditable(false);
+                        this.addMemberButton.setEnabled(false);
+                        this.removeButton.setEnabled(false);
+                        
+                    } else
+                    {
+                        this.idInUseLable.setText("<html><font color='red'>Member was NOT added for unkown error.</font></html>");
+                    }
                 } else
                 {
                     JOptionPane.showMessageDialog(this, "Please enter a last name.");
@@ -275,6 +310,38 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
         }
         
     }//GEN-LAST:event_addMemberButtonActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        
+        long idTemp = 0;
+        
+        try 
+        {
+            idTemp = Long.parseLong(this.detectedIDField.getText());    
+        } catch (NumberFormatException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error in parsing long from text.");
+            return;
+        }
+        Member local = doc.getRoster().getMember(idTemp);
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Do you really want to remove this member?"
+                + "\nName: " + local.getfName() + " " + local.getlName(),"Warning",dialogButton);
+        if(dialogResult == JOptionPane.YES_OPTION)
+        {
+            if (doc.getRoster().removeMember(local))
+            {
+                this.idInUseLable.setText("Id is unused");
+                this.UseThisIDButton.setEnabled(true);
+                this.removeButton.setEnabled(false);
+                JOptionPane.showMessageDialog(this, "Member was removed.");
+            } else
+            {
+                JOptionPane.showMessageDialog(this, "Member could not be removed.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+    }//GEN-LAST:event_removeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,6 +401,7 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JTextArea otherInfoArea;
+    private javax.swing.JButton removeButton;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -359,10 +427,13 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
                                         doc.getRoster().getMember(idTemp).getfName() + " " + 
                                         doc.getRoster().getMember(idTemp).getlName() + "!</font></html>");
             this.UseThisIDButton.setEnabled(false);
+            this.removeButton.setEnabled(true);
+            
         } else
         {
             this.idInUseLable.setText("Id is unused");
             this.UseThisIDButton.setEnabled(true);
+            this.removeButton.setEnabled(false);
         }
         
     }
