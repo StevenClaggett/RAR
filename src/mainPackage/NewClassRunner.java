@@ -1,3 +1,5 @@
+package mainPackage;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -76,7 +78,8 @@ public class NewClassRunner
         */
         
         
-        writeRAR(doc);
+        //writeRAR(doc);
+        //writeRAR will be called on window close for launcherGUI
     }
     
     public static RARDocument readRAR()

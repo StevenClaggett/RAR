@@ -153,7 +153,7 @@ public class CreateEventGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        rosterTable.setColumnSelectionAllowed(true);
+        rosterTable.setCellSelectionEnabled(false);
         rosterTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(rosterTable);
         rosterTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

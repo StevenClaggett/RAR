@@ -4,7 +4,12 @@
  * and open the template in the editor.
  */
 package view;
+import mainPackage.NewClassRunner;
 import DataModel.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Steven
@@ -21,6 +26,14 @@ public class LauncherGUI extends javax.swing.JFrame {
         this.doc = doc_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.addWindowListener( new WindowAdapter()
+            {
+                @Override
+                public void windowClosing(WindowEvent e)
+                {
+                    mainPackage.NewClassRunner.writeRAR(doc);     
+                }
+            });
     }
 
     /**

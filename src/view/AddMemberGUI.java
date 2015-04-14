@@ -6,14 +6,15 @@
 package view;
 import DataModel.*;
 import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Steven
  */
-public class AddMemberGUI extends javax.swing.JFrame {
+public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallable{
 
     private static RARDocument doc;
-    
+    private RFID.RFIDCaller caller;
     /**
      * Creates new form AddMemberGUI
      */
@@ -30,6 +31,8 @@ public class AddMemberGUI extends javax.swing.JFrame {
         this.emailField.setEditable(false);
         this.otherInfoArea.setEditable(false);
         this.addMemberButton.setEnabled(false);
+        
+        caller = new RFID.RFIDCaller(this);
         
     }
 
@@ -74,6 +77,11 @@ public class AddMemberGUI extends javax.swing.JFrame {
         idInUseLable.setText(" ");
 
         UseThisIDButton.setText("Use this ID for new member");
+        UseThisIDButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UseThisIDButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("ID for new member:");
 
@@ -92,6 +100,11 @@ public class AddMemberGUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(otherInfoArea);
 
         addMemberButton.setText("Add Member");
+        addMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMemberButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -196,6 +209,60 @@ public class AddMemberGUI extends javax.swing.JFrame {
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    private void UseThisIDButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UseThisIDButtonActionPerformed
+        this.firstNameField.setEditable(true);
+        this.lastNameField.setEditable(true);
+        this.emailField.setEditable(true);
+        this.otherInfoArea.setEditable(true);
+        this.addMemberButton.setEnabled(true);
+        
+        this.IdForNewMemberField.setText(this.detectedIDField.getText());
+
+        
+        
+    }//GEN-LAST:event_UseThisIDButtonActionPerformed
+
+    private void addMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberButtonActionPerformed
+        String fname = this.firstNameField.getText();
+        String lname = this.lastNameField.getText();
+        String email = this.emailField.getText();
+        String otherinfo = this.otherInfoArea.getText();
+        long idTemp = 0;
+        
+        try 
+        {
+            idTemp = Long.parseLong(this.IdForNewMemberField.getText());    
+        } catch (NumberFormatException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error in parsing long from text.");
+            return;
+        }
+        
+        
+        if (idTemp != 0)
+        {
+            if (fname.length() > 0)
+            {
+                if (lname.length() > 0)
+                {
+                    Member toAdd = new Member(idTemp, fname, lname, email, otherinfo);
+                    doc.getRoster().addMember(toAdd);
+                    this.idInUseLable.setText("<html><font color='green'>Member was added successfully!</font></html>");
+                } else
+                {
+                    JOptionPane.showMessageDialog(this, "Please enter a last name.");
+                }
+            } else
+            {
+                JOptionPane.showMessageDialog(this, "Please enter a first name.");
+            }
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a valid ID (This shouldn't happen).");
+        }
+        
+    }//GEN-LAST:event_addMemberButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -226,7 +293,9 @@ public class AddMemberGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddMemberGUI(new RARDocument()).setVisible(true);
+                RARDocument doc1 = new RARDocument();
+                doc1.getRoster().addMember(new Member(3817373591L));
+                new AddMemberGUI(doc1).setVisible(true);
             }
         });
     }
@@ -253,4 +322,35 @@ public class AddMemberGUI extends javax.swing.JFrame {
     private javax.swing.JTextField lastNameField;
     private javax.swing.JTextArea otherInfoArea;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void idWasScanned(String id) 
+    {
+        long idTemp = 0;
+        try 
+        {
+            idTemp = Long.parseLong(id, 16);    
+        } catch (NumberFormatException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error in parsing long from text.");
+            return;
+        }
+        
+        
+        this.detectedIDField.setText(String.valueOf(idTemp));
+        
+        if (doc.getRoster().getRosterSet().contains(new Member(idTemp)))
+        {
+            
+            this.idInUseLable.setText("<html><font color='red'>This id is being used for " + 
+                                        doc.getRoster().getMember(idTemp).getfName() + " " + 
+                                        doc.getRoster().getMember(idTemp).getlName() + "!</font></html>");
+            this.UseThisIDButton.setEnabled(false);
+        } else
+        {
+            this.idInUseLable.setText("Id is unused");
+            this.UseThisIDButton.setEnabled(true);
+        }
+        
+    }
 }

@@ -36,7 +36,7 @@ public class RFIDCaller implements Runnable, SerialPortEventListener
 
    
     
-    public RFIDCaller(TestClass t_) 
+    public RFIDCaller(RFIDCallable t_) 
     {
         t = t_;
         portList = CommPortIdentifier.getPortIdentifiers();
