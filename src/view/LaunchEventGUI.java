@@ -4,17 +4,21 @@
  * and open the template in the editor.
  */
 package view;
-
+import DataModel.*;
 /**
  *
  * @author Steven
  */
 public class LaunchEventGUI extends javax.swing.JFrame {
 
+    
+    private static RARDocument doc;
     /**
      * Creates new form LaunchEventGUI
      */
-    public LaunchEventGUI() {
+    public LaunchEventGUI(RARDocument doc_) 
+    {
+        this.doc = doc_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
@@ -74,7 +78,7 @@ public class LaunchEventGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LaunchEventGUI().setVisible(true);
+                new LaunchEventGUI(new RARDocument()).setVisible(true);
             }
         });
     }

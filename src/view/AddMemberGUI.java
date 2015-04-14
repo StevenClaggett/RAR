@@ -4,17 +4,21 @@
  * and open the template in the editor.
  */
 package view;
-
+import DataModel.*;
 /**
  *
  * @author Steven
  */
 public class AddMemberGUI extends javax.swing.JFrame {
 
+    private static RARDocument doc;
+    
     /**
      * Creates new form AddMemberGUI
      */
-    public AddMemberGUI() {
+    public AddMemberGUI(RARDocument doc_) 
+    {
+        this.doc = doc_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
@@ -74,7 +78,7 @@ public class AddMemberGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddMemberGUI().setVisible(true);
+                new AddMemberGUI(new RARDocument()).setVisible(true);
             }
         });
     }

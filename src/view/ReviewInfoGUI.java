@@ -15,12 +15,14 @@ import javax.swing.JOptionPane;
  */
 public class ReviewInfoGUI extends javax.swing.JFrame {
     
-    RARDocument doc;
+    private static RARDocument doc;
 
     /**
      * Creates new form ReviewInfoGUI
      */
-    public ReviewInfoGUI() {
+    public ReviewInfoGUI(RARDocument doc_) 
+    {
+        this.doc = doc_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
@@ -173,7 +175,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReviewInfoGUI().setVisible(true);
+                new ReviewInfoGUI(new RARDocument()).setVisible(true);
             }
         });
     }

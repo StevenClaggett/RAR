@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class CreateEventGUI extends javax.swing.JFrame {
 
-    RARDocument doc;
+    private static RARDocument doc;
     Member[] onScreen;
     MemberSet builder;
     /**
@@ -22,7 +22,7 @@ public class CreateEventGUI extends javax.swing.JFrame {
      */
     public CreateEventGUI(RARDocument doc_) 
     {
-        doc = doc_;
+        this.doc = doc_;
         builder = new MemberSet();
         initComponents();
         initializeRosterTable();

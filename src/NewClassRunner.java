@@ -27,9 +27,7 @@ public class NewClassRunner
         RARDocument doc = readRAR();
         //System.out.println("RARDocument created, adding new event.");
         //doc.getFutureEvents().add(new Event("Class on WednesDay"));
-        System.out.println(doc);
-        doc.createEvent("Class for 4/13/2015");
-        doc.getRoster().addMember(new Member(1234, "Steven", "Claggett"));
+        new view.LauncherGUI(doc).setVisible(true);
         ////////////////////////////////////////////////////////////////////////
         /*
         //System.out.println("Event Added. Checking to confirm event added");
@@ -221,4 +219,69 @@ public class NewClassRunner
             i.printStackTrace();
         }*/
     }
+    
+    public static RARDocument getTestDoc()
+    {
+        RARDocument doc = new RARDocument();
+        
+        doc.getRoster().addMember(new Member(1, "Steven", "Claggett"));
+        doc.getRoster().addMember(new Member(2, "Jamal", "Almloussli"));
+        doc.getRoster().addMember(new Member(3, "Barack", "Obama"));
+        doc.getRoster().addMember(new Member(4, "Goodluck", "Johnson"));
+        doc.getRoster().addMember(new Member(5, "Jennifer", "Anniston"));
+        doc.getRoster().addMember(new Member(6, "Katy", "Perry"));
+        doc.getRoster().addMember(new Member(7, "Steve", "Aoki"));
+        doc.getRoster().addMember(new Member(8, "Brandon", "Baker"));
+        doc.getRoster().addMember(new Member(9, "Chris", "Reilly"));
+        doc.getRoster().addMember(new Member(10, "Lester", "Ferguson"));
+        doc.getRoster().addMember(new Member(11, "Hillary", "Clinton"));
+        doc.getRoster().addMember(new Member(12, "Glen", "Quagmire"));
+        doc.getRoster().addMember(new Member(13, "John", "DeBluise"));
+        doc.getRoster().addMember(new Member(14, "Scooby", "Doo"));
+        doc.getRoster().addMember(new Member(15, "Peter", "Peterson"));
+        doc.getRoster().addMember(new Member(16, "Jeremy", "Carmichael"));
+        doc.getRoster().addMember(new Member(17, "Adrian", "Gomez"));
+        doc.getRoster().addMember(new Member(18, "Hank", "Schraeder"));
+        doc.getRoster().addMember(new Member(19, "Steve", "Gomez"));
+        doc.getRoster().addMember(new Member(20, "Corey", "Zamora"));
+        doc.getRoster().addMember(new Member(21, "Jeff", "Bezos"));
+        doc.getRoster().addMember(new Member(22, "Eric", "Schmidt"));
+        doc.getRoster().addMember(new Member(23, "Ken", "Thompson"));
+        doc.getRoster().addMember(new Member(24, "Steve", "Jobs"));
+        doc.getRoster().addMember(new Member(25, "Steve", "Wozniak"));
+        doc.getRoster().addMember(new Member(26, "Bill", "Gates"));
+        doc.getRoster().addMember(new Member(27, "Paul", "Allen"));
+        doc.getRoster().addMember(new Member(28, "Chris", "Espinoza"));
+        doc.getRoster().addMember(new Member(29, "Dennis", "Ritchie"));
+        doc.getRoster().addMember(new Member(30, "Jayson", "Thieson"));
+        doc.getRoster().addMember(new Member(31, "Rick", "Astley"));
+        doc.getRoster().addMember(new Member(32, "Leory", "Jenkins"));
+        doc.getRoster().addMember(new Member(33, "George", "Harrison"));
+        doc.getRoster().addMember(new Member(34, "John", "Lennon"));
+        doc.getRoster().addMember(new Member(35, "Steve", "Buscemi"));
+        doc.getRoster().addMember(new Member(36, "Gandolf", "White"));
+        doc.getRoster().addMember(new Member(37, "Walter", "White"));
+        doc.getRoster().addMember(new Member(38, "Esther", "Little"));
+        doc.getRoster().addMember(new Member(39, "Skylar", "White"));
+        doc.getRoster().addMember(new Member(40, "Betty", "White"));
+        
+        doc.getFutureEvents().add(new Event("Class On Wednesday"));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(1));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(2));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(3));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(4));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(5));
+        
+        doc.getFutureEvents().add(new Event("Class On Friday"));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(6));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(7));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(8));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(9));
+        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(0));
+        
+       
+        
+        return doc;
+    }
+    
 }

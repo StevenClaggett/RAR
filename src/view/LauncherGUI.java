@@ -11,10 +11,14 @@ import DataModel.*;
  */
 public class LauncherGUI extends javax.swing.JFrame {
 
+    
+    private static RARDocument doc;
     /**
      * Creates new form LauncherGUI
      */
-    public LauncherGUI() {
+    public LauncherGUI(RARDocument doc_) 
+    {
+        this.doc = doc_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
@@ -102,7 +106,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     private void LaunchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LaunchButtonMouseClicked
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LaunchEventGUI().setVisible(true);
+                new LaunchEventGUI(doc).setVisible(true);
             }
         });
     }//GEN-LAST:event_LaunchButtonMouseClicked
@@ -110,7 +114,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     private void CreateEventButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateEventButtonMouseClicked
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateEventGUI(new RARDocument()).setVisible(true);
+                new CreateEventGUI(doc).setVisible(true);
             }
         });
     }//GEN-LAST:event_CreateEventButtonMouseClicked
@@ -118,7 +122,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     private void ReviewEventInfoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReviewEventInfoButtonMouseClicked
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ReviewInfoGUI().setVisible(true);
+                new ReviewInfoGUI(doc).setVisible(true);
             }
         });
     }//GEN-LAST:event_ReviewEventInfoButtonMouseClicked
@@ -126,7 +130,7 @@ public class LauncherGUI extends javax.swing.JFrame {
     private void AddMemberButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddMemberButtonMouseClicked
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddMemberGUI().setVisible(true);
+                new AddMemberGUI(doc).setVisible(true);
             }
         });
     }//GEN-LAST:event_AddMemberButtonMouseClicked
@@ -161,7 +165,7 @@ public class LauncherGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LauncherGUI().setVisible(true);
+                new LauncherGUI(new RARDocument()).setVisible(true);
             }
         });
     }
