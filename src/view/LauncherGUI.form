@@ -65,7 +65,7 @@
         <Property name="text" type="java.lang.String" value="Launch Event"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="LaunchButtonMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LaunchButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="CreateEventButton">
@@ -76,7 +76,7 @@
         <Property name="text" type="java.lang.String" value="Create Event"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="CreateEventButtonMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CreateEventButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="ReviewEventInfoButton">
@@ -87,7 +87,7 @@
         <Property name="text" type="java.lang.String" value="Review Event Info"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ReviewEventInfoButtonMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReviewEventInfoButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="AddMemberButton">
@@ -98,7 +98,7 @@
         <Property name="text" type="java.lang.String" value="Add Member"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="AddMemberButtonMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddMemberButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

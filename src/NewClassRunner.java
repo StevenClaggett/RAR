@@ -27,7 +27,7 @@ public class NewClassRunner
         RARDocument doc = readRAR();
         //System.out.println("RARDocument created, adding new event.");
         //doc.getFutureEvents().add(new Event("Class on WednesDay"));
-        System.out.println(doc.getRoster().getMember(39));
+        System.out.println(doc.getRoster().getMember(35));
         
         new view.LauncherGUI(doc).setVisible(true);
         //doc = getTestDoc();

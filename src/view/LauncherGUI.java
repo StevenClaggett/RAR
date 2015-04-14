@@ -41,33 +41,33 @@ public class LauncherGUI extends javax.swing.JFrame {
 
         LaunchButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         LaunchButton.setText("Launch Event");
-        LaunchButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LaunchButtonMouseClicked(evt);
+        LaunchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LaunchButtonActionPerformed(evt);
             }
         });
 
         CreateEventButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         CreateEventButton.setText("Create Event");
-        CreateEventButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CreateEventButtonMouseClicked(evt);
+        CreateEventButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateEventButtonActionPerformed(evt);
             }
         });
 
         ReviewEventInfoButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ReviewEventInfoButton.setText("Review Event Info");
-        ReviewEventInfoButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ReviewEventInfoButtonMouseClicked(evt);
+        ReviewEventInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReviewEventInfoButtonActionPerformed(evt);
             }
         });
 
         AddMemberButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         AddMemberButton.setText("Add Member");
-        AddMemberButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AddMemberButtonMouseClicked(evt);
+        AddMemberButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddMemberButtonActionPerformed(evt);
             }
         });
 
@@ -103,37 +103,37 @@ public class LauncherGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void LaunchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LaunchButtonMouseClicked
+    private void LaunchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaunchButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LaunchEventGUI(doc).setVisible(true);
             }
-        });
-    }//GEN-LAST:event_LaunchButtonMouseClicked
+        });// TODO add your handling code here:
+    }//GEN-LAST:event_LaunchButtonActionPerformed
 
-    private void CreateEventButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateEventButtonMouseClicked
+    private void CreateEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateEventButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CreateEventGUI(doc).setVisible(true);
             }
-        });
-    }//GEN-LAST:event_CreateEventButtonMouseClicked
+        });// TODO add your handling code here:
+    }//GEN-LAST:event_CreateEventButtonActionPerformed
 
-    private void ReviewEventInfoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReviewEventInfoButtonMouseClicked
+    private void ReviewEventInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReviewEventInfoButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ReviewInfoGUI(doc).setVisible(true);
             }
-        });
-    }//GEN-LAST:event_ReviewEventInfoButtonMouseClicked
+        });// TODO add your handling code here:
+    }//GEN-LAST:event_ReviewEventInfoButtonActionPerformed
 
-    private void AddMemberButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddMemberButtonMouseClicked
+    private void AddMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMemberButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddMemberGUI(doc).setVisible(true);
             }
-        });
-    }//GEN-LAST:event_AddMemberButtonMouseClicked
+        });// TODO add your handling code here:
+    }//GEN-LAST:event_AddMemberButtonActionPerformed
 
     /**
      * @param args the command line arguments
