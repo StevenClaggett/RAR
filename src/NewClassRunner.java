@@ -14,6 +14,7 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener; 
 import java.util.Enumeration;
 import java.io.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Steven
@@ -24,11 +25,13 @@ public class NewClassRunner
     public static void main(String[] args)
     {
         RARDocument doc = readRAR();
-        System.out.println("RARDocument created, adding new event.");
+        //System.out.println("RARDocument created, adding new event.");
         //doc.getFutureEvents().add(new Event("Class on WednesDay"));
-        
+        System.out.println(doc);
+        doc.createEvent("Class for 4/13/2015");
+        doc.getRoster().addMember(new Member(1234, "Steven", "Claggett"));
         ////////////////////////////////////////////////////////////////////////
-        
+        /*
         //System.out.println("Event Added. Checking to confirm event added");
         boolean b = doc.getFutureEvents().contains(new Event("Class on WednesDay"));
         if(b)
@@ -78,35 +81,133 @@ public class NewClassRunner
     public static RARDocument readRAR()
     {
         RARDocument doc = null;
+        try 
+        {
+            try (FileInputStream f = new FileInputStream("RARDocument.ser")) 
+            {
+                ObjectInput s = null;
+                try 
+                {
+                    s = new ObjectInputStream(f);
+                } catch (java.io.EOFException e) 
+                {
+                    System.err.println("First run requires creation of RARDocument.ser");
+                    f.close();
+                }
+
+                if (s != null)
+                {
+                    doc = (RARDocument)s.readObject();
+                }
+
+            }
+        } catch (FileNotFoundException ex) 
+        {
+            /* if file doesn't exist, just create it*/
+            try 
+            {
+
+                JOptionPane.showMessageDialog(null, "Creating a new RARDocument.ser since none was found.");
+                
+                PrintWriter pw = new PrintWriter("RARDocument.ser");
+
+                pw.close();
+
+
+            } catch (FileNotFoundException ex1) 
+            {
+                //oops we are out of luck if we can't create the file....
+                
+                System.err.println("Very fatal error: for some reason the file RARDocument does not exist.");
+                
+            }
+
+        } catch (IOException | ClassNotFoundException ex) 
+        {
+            if (ex instanceof java.io.EOFException)
+            {
+                /* if we get end of file exception, it just means we have 
+                    read all the objects in the file 
+                    the file input stream will be automatically closed
+                */
+
+            } else
+            {
+            }
+        }
+
+        if (doc == null)
+        {
+            doc = new RARDocument();
+        }
+        /*
+        RARDocument doc = null;
         File file = new File("RARDocument.ser");
-        try
+        if (file.exists() && file.isFile())
         {
-            file.createNewFile();
-            FileInputStream fileIn = new FileInputStream(file);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            doc = (RARDocument) in.readObject();
-            in.close();
-            fileIn.close();
-        }
-        catch(IOException i)
+            try
+            {
+                file.createNewFile();
+                FileInputStream fileIn = new FileInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                doc = (RARDocument) in.readObject();
+                in.close();
+                fileIn.close();
+            }
+            catch(IOException i)
+            {
+                i.printStackTrace();
+                System.out.println("!!!!");
+                return null;
+            }
+            catch(ClassNotFoundException c)
+            {
+                c.printStackTrace();
+                System.out.println("@@@@");
+                return null;
+            }
+        } else
         {
-            i.printStackTrace();
-            return null;
-        }
-        catch(ClassNotFoundException c)
-        {
-            c.printStackTrace();
-            return null;
+            doc = new RARDocument();
+            new javax.swing.JOptionPane("No RARDocument.ser found, creating a new one...");
+            System.out.println("doc was null");
         }
         if(doc == null)
-            doc = new RARDocument();
-        
+        {
+            
+        }
+        */
         return doc;
     }
     
     public static void writeRAR(RARDocument doc)
     {
-        try
+        if (doc != null)
+        {
+            try 
+            {
+                try (FileOutputStream f = new FileOutputStream("RARDocument.ser")) //using try with resources
+                {
+                    ObjectOutput s = new ObjectOutputStream(f);
+
+                    s.writeObject(doc);
+
+                    s.flush();
+                    f.close();
+                }
+            } catch (FileNotFoundException ex) 
+            {
+                
+            } catch (IOException ex) 
+            {
+                
+                ex.printStackTrace(System.out);
+            }
+        } else
+        {
+            System.err.println("Cannot writeout a null object.");
+        }
+        /*try
         {
             File file = new File("RARDocument.ser");
             file.createNewFile();
@@ -118,6 +219,6 @@ public class NewClassRunner
         catch(IOException i)
         {
             i.printStackTrace();
-        }
+        }*/
     }
 }
