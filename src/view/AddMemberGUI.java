@@ -5,6 +5,7 @@
  */
 package view;
 import DataModel.*;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 /**
@@ -23,6 +24,9 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
         this.doc = doc_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        
+        
+        
         this.detectedIDField.setEditable(false);//don't reset editable
         this.IdForNewMemberField.setEditable(false);//don't reset as editable
         this.UseThisIDButton.setEnabled(false);
@@ -33,6 +37,15 @@ public class AddMemberGUI extends javax.swing.JFrame implements RFID.RFIDCallabl
         this.addMemberButton.setEnabled(false);
         
         caller = new RFID.RFIDCaller(this);
+        
+        this.addWindowListener( new WindowAdapter()
+            {
+                @Override
+                public void windowClosing(WindowEvent e)
+                {
+                    caller.serialPort.close();
+                }
+            });
         
     }
 

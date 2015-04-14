@@ -12,7 +12,7 @@ public class RFIDCaller implements Runnable, SerialPortEventListener
     Enumeration portList;
     String uid = "";
     InputStream inputStream;
-    SerialPort serialPort;
+    public SerialPort serialPort;
     Thread readThread;
     RFIDCallable t;
 
