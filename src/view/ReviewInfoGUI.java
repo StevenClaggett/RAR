@@ -24,7 +24,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
     {
         this.doc = doc_;
         initComponents();
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
 
     /**
@@ -131,7 +131,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_reviewButtonMouseClicked
 
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
-        this.dispose();
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_closeButtonMouseClicked
 
     void initializeEventsTable() {
