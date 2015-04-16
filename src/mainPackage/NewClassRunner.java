@@ -272,18 +272,18 @@ public class NewClassRunner
         doc.getRoster().addMember(new Member(40, "Betty", "White"));
         
         doc.getFutureEvents().add(new Event("Class On Wednesday"));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(1));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(2));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(3));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(4));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Wednesday"))).addInvite(new Member(5));
+        doc.getFutureEvents("Class On Wednesday").addInvite(new Member(1));
+        doc.getFutureEvents("Class On Wednesday").addInvite(new Member(2));
+        doc.getFutureEvents("Class On Wednesday").addInvite(new Member(3));
+        doc.getFutureEvents("Class On Wednesday").addInvite(new Member(4));
+        doc.getFutureEvents("Class On Wednesday").addInvite(new Member(5));
         
         doc.getFutureEvents().add(new Event("Class On Friday"));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(6));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(7));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(8));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(9));
-        doc.getFutureEvents().get(doc.getFutureEvents().indexOf(new Event("Class On Friday"))).addInvite(new Member(0));
+        doc.getFutureEvents("Class On Friday").addInvite(new Member(6));
+        doc.getFutureEvents("Class On Friday").addInvite(new Member(7));
+        doc.getFutureEvents("Class On Friday").addInvite(new Member(8));
+        doc.getFutureEvents("Class On Friday").addInvite(new Member(9));
+        doc.getFutureEvents("Class On Friday").addInvite(new Member(0));
         
        
         
