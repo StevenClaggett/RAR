@@ -141,10 +141,11 @@ public class LaunchEventGUI extends javax.swing.JFrame {
         
         Event e = doc.getFutureEvents().get(this.jTable1.getSelectedRow());
         
-        /*
-        TODO:
-            Create launch gui that takes this event and doc and run the main attendance loop.
-        */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new EventGUI(doc, e).setVisible(true);
+            }
+        });
         
     }//GEN-LAST:event_launchButtonActionPerformed
 
