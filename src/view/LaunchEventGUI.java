@@ -140,10 +140,11 @@ public class LaunchEventGUI extends javax.swing.JFrame {
     private void launchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_launchButtonActionPerformed
         
         Event e = doc.getFutureEvents().get(this.jTable1.getSelectedRow());
-        
+        LaunchEventGUI leg = this;
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new EventGUI(doc, e).setVisible(true);
+                new EventGUI(doc, e, leg).setVisible(true);
             }
         });
         
@@ -182,6 +183,11 @@ public class LaunchEventGUI extends javax.swing.JFrame {
                 new LaunchEventGUI(new RARDocument()).setVisible(true);
             }
         });
+    }
+    // to be called by EventGUI
+    public void reset()
+    {
+        this.initializeEventTable();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

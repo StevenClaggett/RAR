@@ -10,6 +10,7 @@ import RFID.RFIDCallable;
 import RFID.RFIDCaller;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,13 +22,14 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
     private static RARDocument doc;
     private static Event event;
     private static RFIDCaller caller;
-
+    private static LaunchEventGUI leg;
     /**
      * Creates new form EventGUI
      */
-    public EventGUI(RARDocument doc_, Event e_) {
+    public EventGUI(RARDocument doc_, Event e_, LaunchEventGUI leg_) {
         this.doc = doc_;
         this.event = e_;
+        this.leg = leg_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         caller = new RFIDCaller(this);
@@ -49,11 +51,32 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
                     doc.getFutureEvents().remove(doc.getFutureEvents().indexOf(event));
                     doc.getCompletedEvents().add(event);
                     
+                    // this calls the associated LaunchEventGUI to reset the future events table
+                    leg.reset();
+                    
                 }
             });
         
+        this.refreshInvitesTable();        
     }
-
+    
+    private void refreshInvitesTable()
+    {
+        ArrayList<Member> invites = this.event.getInvites().getRosterSet();
+        
+        String tableBuilder[][] = new String[invites.size()][2];
+        
+        for (int i = 0; i < invites.size(); i++)
+        {
+            tableBuilder[i][0] = invites.get(i).getfName();
+            tableBuilder[i][1] = invites.get(i).getlName();
+        }
+        
+        this.jTable1.setModel(new javax.swing.table.DefaultTableModel(tableBuilder, new String[]{
+            "First", "Last"
+        }));
+        
+    }
     @Override
     public void idWasScanned(String id)
     {
@@ -78,6 +101,7 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
                 if(event.MemberAttended(m))
                 {
                     MemberName.setText("Welcome " + m.getfName()+" "+m.getlName());
+                    this.refreshInvitesTable();
                 } else
                 {
                     MemberName.setText("Error.");
@@ -97,6 +121,22 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
         {
             MemberName.setText("The id " + idTemp + " does not exist in the system.");
         }
+        
+        
+        // if no more invites, might as well close . ..
+        
+        if (event.getInvites().getRosterSet().isEmpty())
+        {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Everyone invited has been counted present, would you like to close?","Attention",dialogButton);
+            if(dialogResult == JOptionPane.YES_OPTION)
+            {
+                this.CloseButton.setEnabled(false);
+                this.MemberName.setText("Please Wait, now closing. . .");
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            } 
+            
+        }
             
     }
     
@@ -109,38 +149,76 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        CloseButton = new javax.swing.JButton();
         MemberName = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Cancel");
-        jButton1.setActionCommand("CancelButton");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        CloseButton.setText("Close Event");
+        CloseButton.setActionCommand("CancelButton");
+        CloseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                CloseButtonActionPerformed(evt);
             }
         });
 
+        MemberName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         MemberName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        MemberName.setText("Now listening for RFID scans . . .");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "First", "Last"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel1.setText("Remaining Invites:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 1080, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(MemberName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(MemberName, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(464, Short.MAX_VALUE)
-                .addComponent(MemberName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(306, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(MemberName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         MemberName.getAccessibleContext().setAccessibleName("MemberName");
@@ -148,9 +226,9 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void CloseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseButtonActionPerformed
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_CloseButtonActionPerformed
     
     /**
      * @param args the command line arguments
@@ -182,13 +260,16 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EventGUI(new RARDocument(), new Event("Event")).setVisible(true);
+                new EventGUI(new RARDocument(), new Event("Event"), new LaunchEventGUI(mainPackage.NewClassRunner.getTestDoc())).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CloseButton;
     private javax.swing.JLabel MemberName;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
