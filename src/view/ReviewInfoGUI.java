@@ -16,17 +16,35 @@ import javax.swing.JOptionPane;
 public class ReviewInfoGUI extends javax.swing.JFrame {
     
     private static RARDocument doc;
-
+    private ArrayList<Event> events; 
     /**
      * Creates new form ReviewInfoGUI
      */
     public ReviewInfoGUI(RARDocument doc_) 
     {
         this.doc = doc_;
+        events = doc.getCompletedEvents();
         initComponents();
+        initEventTable();
+        this.deleteEventButton.setEnabled(false);
+        this.reviewButton.setEnabled(false);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
 
+    private void initEventTable()
+    {
+        String [][] tableBuilder = new String[events.size()][1];
+        
+        for (int i = 0; i < events.size(); i++)
+        {
+            tableBuilder[i][0] = events.get(i).getDescription();
+        }
+        
+        this.completedEventsTable.setModel(new javax.swing.table.DefaultTableModel(tableBuilder, new String[]{
+            "Name/Description of Event"
+        }));   
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,46 +58,42 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         completedEventsTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         closeButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        attendedTable = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        didNotAttendTable = new javax.swing.JTable();
+        deleteEventButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        reviewButton.setText("Review");
-        reviewButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                reviewButtonMouseClicked(evt);
+        reviewButton.setText("Review this Event");
+        reviewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reviewButtonActionPerformed(evt);
             }
         });
 
         completedEventsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Completed Events"
             }
         ));
+        completedEventsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                completedEventsTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(completedEventsTable);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Please select an event to review:");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Attendee", "Has Attended"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
 
         closeButton.setText("Close");
         closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -88,51 +102,198 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
             }
         });
 
+        attendedTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "First", "Last"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(attendedTable);
+
+        didNotAttendTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "First", "Last"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(didNotAttendTable);
+
+        deleteEventButton.setText("Delete Event");
+        deleteEventButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteEventButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Members who attended this event");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Members who did not attend this event");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addContainerGap(269, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(closeButton)
-                            .addComponent(reviewButton))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(reviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(311, 311, 311)
+                                .addComponent(deleteEventButton, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(27, 27, 27))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(deleteEventButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(reviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(reviewButton)
-                .addGap(43, 43, 43)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(closeButton)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void reviewButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reviewButtonMouseClicked
-        JOptionPane.showMessageDialog(this, "test");        // TODO add your handling code here:
-    }//GEN-LAST:event_reviewButtonMouseClicked
-
     private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_closeButtonMouseClicked
+
+    private void completedEventsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_completedEventsTableMouseClicked
+        this.deleteEventButton.setEnabled(true);
+        this.reviewButton.setEnabled(true);
+    }//GEN-LAST:event_completedEventsTableMouseClicked
+
+    private void deleteEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEventButtonActionPerformed
+        
+        if (this.completedEventsTable.getSelectedRow() >= 0)
+        {
+            Event eventToDelete = events.get(this.completedEventsTable.getSelectedRow());
+            
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Do you really want to remove this event?"
+                + "\nName: " + eventToDelete.getDescription(), "Warning",dialogButton);
+            if(dialogResult == JOptionPane.YES_OPTION)
+            {
+                doc.getCompletedEvents().remove(eventToDelete);
+                this.deleteEventButton.setEnabled(false);
+                this.reviewButton.setEnabled(false);
+                this.initEventTable();
+                
+                //these setModel calls just clear the tables if they happen to have something in them already
+                
+                this.attendedTable.setModel(new javax.swing.table.DefaultTableModel(new String[0][0], new String[]{
+                "First", "Last"
+                }));
+            
+                this.didNotAttendTable.setModel(new javax.swing.table.DefaultTableModel(new String[0][0], new String[]{
+                "First", "Last"
+                }));
+                
+            }
+            
+        }
+    }//GEN-LAST:event_deleteEventButtonActionPerformed
+
+    private void reviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewButtonActionPerformed
+        if (this.completedEventsTable.getSelectedRow() >= 0)
+        {
+            Event eventToReview = events.get(this.completedEventsTable.getSelectedRow());
+            
+            ArrayList<Member> attendees = eventToReview.getAttendees().getRosterSet();
+            ArrayList<Member> noShows = eventToReview.getInvites().getRosterSet();
+            
+            String t1[][] = new String[attendees.size()][2];
+            String t2[][] = new String[noShows.size()][2];
+            
+            for (int i = 0; i < attendees.size(); i++)
+            {
+                t1[i][0] = attendees.get(i).getfName();
+                t1[i][1] = attendees.get(i).getlName();
+            }
+            
+            for (int i = 0; i < noShows.size(); i++)
+            {
+                t2[i][0] = noShows.get(i).getfName();
+                t2[i][1] = noShows.get(i).getlName();
+            }
+            
+            this.attendedTable.setModel(new javax.swing.table.DefaultTableModel(t1, new String[]{
+            "First", "Last"
+            }));
+            
+            this.didNotAttendTable.setModel(new javax.swing.table.DefaultTableModel(t2, new String[]{
+            "First", "Last"
+            }));
+            
+        }
+    }//GEN-LAST:event_reviewButtonActionPerformed
 
     void initializeEventsTable() {
         ArrayList<ArrayList<String>> compEvents = new ArrayList<>();
@@ -181,12 +342,18 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable attendedTable;
     private javax.swing.JButton closeButton;
     private javax.swing.JTable completedEventsTable;
+    private javax.swing.JButton deleteEventButton;
+    private javax.swing.JTable didNotAttendTable;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton reviewButton;
     // End of variables declaration//GEN-END:variables
 }
