@@ -8,7 +8,9 @@ package view;
 import DataModel.*;
 import RFID.RFIDCallable;
 import RFID.RFIDCaller;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,27 +19,85 @@ import java.awt.event.WindowEvent;
 public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
     
     private static RARDocument doc;
-    private static Event e;
-    private static RFIDCaller r;
+    private static Event event;
+    private static RFIDCaller caller;
 
     /**
      * Creates new form EventGUI
      */
     public EventGUI(RARDocument doc_, Event e_) {
         this.doc = doc_;
-        this.e = e_;
+        this.event = e_;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        r = new RFIDCaller(this);
+        caller = new RFIDCaller(this);
+        
+        //this listener is for when the window closes, it will close the port.
+        this.addWindowListener(new WindowAdapter()
+            {
+                @Override
+                public void windowClosing(WindowEvent e)
+                {
+                    if (caller.serialPort != null)
+                    {
+                        caller.serialPort.close();
+                    }
+                    //System.out.println(event.getAttendees().getRosterSet().get(0));
+                    
+                    //we also want to move the event to completed events
+                    
+                    doc.getFutureEvents().remove(doc.getFutureEvents().indexOf(event));
+                    doc.getCompletedEvents().add(event);
+                    
+                }
+            });
+        
     }
 
+    @Override
     public void idWasScanned(String id)
     {
-        Member m = e.getAttendees().getMember(Long.valueOf(id).longValue());
-        if(e.MemberAttended(m))
-            MemberName.setText(m.getfName()+" "+m.getlName());
-        else
-            MemberName.setText("Attendee not found");
+        long idTemp = 0;
+        try 
+        {
+            idTemp = Long.parseLong(id, 16);    
+        } catch (NumberFormatException e) 
+        {
+            JOptionPane.showMessageDialog(this, "Error in parsing long from text.");
+            return;
+        }
+        
+        
+        
+        
+        if (doc.getRoster().getRosterSet().contains(new Member(idTemp)))
+        {
+            if (event.getInvites().getRosterSet().contains(new Member(idTemp)))
+            {
+                Member m = event.getInvites().getMember(idTemp);
+                if(event.MemberAttended(m))
+                {
+                    MemberName.setText("Welcome " + m.getfName()+" "+m.getlName());
+                } else
+                {
+                    MemberName.setText("Error.");
+                }
+            }else
+            {
+                Member m = doc.getRoster(idTemp);
+                if (event.getAttendees().getRosterSet().contains(m))
+                {
+                    MemberName.setText(m.getfName()+ " " +m.getlName() + " is already counted as present.");
+                } else
+                {
+                    MemberName.setText(m.getfName()+ " " +m.getlName() + " was not invited.");
+                }
+            }  
+        } else
+        {
+            MemberName.setText("The id " + idTemp + " does not exist in the system.");
+        }
+            
     }
     
     /**
