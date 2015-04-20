@@ -45,7 +45,8 @@ public class RFIDCaller implements Runnable, SerialPortEventListener
         portList = CommPortIdentifier.getPortIdentifiers();    
         } catch (java.lang.UnsatisfiedLinkError e) 
         {
-            javax.swing.JOptionPane.showMessageDialog(null, "rxtxSerial.dll is not in C:\\rxtx\\, please place it there.");
+            javax.swing.JOptionPane.showMessageDialog(null, "rxtxSerial.dll is not in C:\\rxtx\\, please place it there."
+                    + "\n Also be sure you are using the 64 bit version (127kb in size) not the 32 bit.");
         }
         
         boolean foundPort = false;
