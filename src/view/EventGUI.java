@@ -100,7 +100,8 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
                 Member m = event.getInvites().getMember(idTemp);
                 if(event.MemberAttended(m))
                 {
-                    MemberName.setText("Welcome " + m.getfName()+" "+m.getlName());
+                    this.WelcomeLabel.setText("<html><font color='green' size=35>Welcome " + m.getfName() + "</font></html>");
+                    MemberName.setText(m.getfName()+" "+m.getlName() + " is counted present.");
                     this.refreshInvitesTable();
                 } else
                 {
@@ -111,14 +112,17 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
                 Member m = doc.getRoster(idTemp);
                 if (event.getAttendees().getRosterSet().contains(m))
                 {
+                    this.WelcomeLabel.setText("<html><font color='green' size=35>You are present already " + m.getfName() + "</font></html>");
                     MemberName.setText(m.getfName()+ " " +m.getlName() + " is already counted as present.");
                 } else
                 {
+                    this.WelcomeLabel.setText("<html><font color='red' size=35>" + m.getfName() + " is not invited.</font></html>");
                     MemberName.setText(m.getfName()+ " " +m.getlName() + " was not invited.");
                 }
             }  
         } else
         {
+            this.WelcomeLabel.setText("<html><font color='red' size=35>Unrecognized ID</font></html>");
             MemberName.setText("The id " + idTemp + " does not exist in the system.");
         }
         
@@ -155,6 +159,7 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        WelcomeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -193,6 +198,8 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
         jLabel2.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel2.setText("Please scan your RFID device.");
 
+        WelcomeLabel.setText("Scan your ID");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,15 +208,18 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(324, 324, 324)
                         .addComponent(MemberName, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                         .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(94, 94, 94)
+                                .addComponent(WelcomeLabel)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -218,15 +228,18 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(105, 105, 105)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(MemberName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(WelcomeLabel)
+                        .addGap(279, 279, 279)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CloseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(MemberName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         MemberName.getAccessibleContext().setAccessibleName("MemberName");
@@ -276,6 +289,7 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseButton;
     private javax.swing.JLabel MemberName;
+    private javax.swing.JLabel WelcomeLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
