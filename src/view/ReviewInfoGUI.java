@@ -6,8 +6,17 @@
 package view;
 import DataModel.*;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -16,7 +25,8 @@ import javax.swing.JOptionPane;
 public class ReviewInfoGUI extends javax.swing.JFrame {
     
     private static RARDocument doc;
-    private ArrayList<Event> events; 
+    private ArrayList<Event> events;
+    Event eventToReview;
     /**
      * Creates new form ReviewInfoGUI
      */
@@ -27,6 +37,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
         initComponents();
         initEventTable();
         this.deleteEventButton.setEnabled(false);
+        this.exportButton.setEnabled(false);
         this.reviewButton.setEnabled(false);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
@@ -67,6 +78,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
         deleteEventButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        exportButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,6 +163,13 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Members who did not attend this event");
 
+        exportButton.setText("Export to Excel");
+        exportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,7 +183,8 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(reviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,7 +234,9 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -235,7 +257,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
         if (this.completedEventsTable.getSelectedRow() >= 0)
         {
             Event eventToDelete = events.get(this.completedEventsTable.getSelectedRow());
-            
+            this.eventToReview = null;
             int dialogButton = JOptionPane.YES_NO_OPTION;
             int dialogResult = JOptionPane.showConfirmDialog (null, "Do you really want to remove this event?"
                 + "\nName: " + eventToDelete.getDescription(), "Warning",dialogButton);
@@ -244,6 +266,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
                 doc.getCompletedEvents().remove(eventToDelete);
                 this.deleteEventButton.setEnabled(false);
                 this.reviewButton.setEnabled(false);
+                this.exportButton.setEnabled(false);
                 this.initEventTable();
                 
                 //these setModel calls just clear the tables if they happen to have something in them already
@@ -264,7 +287,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
     private void reviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewButtonActionPerformed
         if (this.completedEventsTable.getSelectedRow() >= 0)
         {
-            Event eventToReview = events.get(this.completedEventsTable.getSelectedRow());
+            eventToReview = events.get(this.completedEventsTable.getSelectedRow());
             
             ArrayList<Member> attendees = eventToReview.getAttendees().getRosterSet();
             ArrayList<Member> noShows = eventToReview.getInvites().getRosterSet();
@@ -292,8 +315,88 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
             "First", "Last"
             }));
             
+            this.exportButton.setEnabled(true);
+            
         }
     }//GEN-LAST:event_reviewButtonActionPerformed
+
+    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
+        if (this.eventToReview != null)
+        {
+            try 
+            {
+                DefaultTableModel dtm = new DefaultTableModel();
+                Vector<String> cols = new Vector<String>();
+                dtm.addColumn("First");
+                dtm.addColumn("Last");
+                dtm.addColumn("Email");
+                dtm.addColumn("Attended");
+
+                Vector<String> dtmrow = null;
+                dtmrow = new Vector<>();
+                dtmrow.add("First");
+                dtmrow.add("Last");
+                dtmrow.add("Email");
+                dtmrow.add("Attended (Yes or No)");
+
+                dtm.addRow(dtmrow);
+
+                dtmrow = null;
+
+                for (int i=0;i<this.eventToReview.getAttendees().getRosterSet().size();i++) 
+                {
+                    dtmrow = new Vector<>();
+
+                    Member localM = this.eventToReview.getAttendees().getRosterSet().get(i);
+
+                    dtmrow.add(localM.getfName());
+                    dtmrow.add(localM.getlName());
+                    dtmrow.add(localM.getEmail());
+                    dtmrow.add("Yes");
+                    
+                    dtm.addRow(dtmrow);
+                }
+                
+                for (int i=0;i<this.eventToReview.getInvites().getRosterSet().size();i++) 
+                {
+                    dtmrow = new Vector<>();
+
+                    Member localM = this.eventToReview.getInvites().getRosterSet().get(i);
+
+                    dtmrow.add(localM.getfName());
+                    dtmrow.add(localM.getlName());
+                    dtmrow.add(localM.getEmail());
+                    dtmrow.add("No");
+                    
+                    dtm.addRow(dtmrow);
+                }
+                
+                ////////////////////////
+                Workbook wb = new HSSFWorkbook();
+                CreationHelper createhelper = wb.getCreationHelper();
+                Sheet sheet = wb.createSheet("Attendence Data for " + this.eventToReview.getDescription());
+                Row row = null;
+                Cell cell = null;
+                for (int i=0;i<dtm.getRowCount();i++) {
+                    row = sheet.createRow(i);
+                    for (int j=0;j<dtm.getColumnCount();j++) {
+
+                        cell = row.createCell(j);
+                        cell.setCellValue((String) dtm.getValueAt(i, j));
+                    }
+                }
+
+                
+                try (FileOutputStream out = new FileOutputStream(".\\" + this.eventToReview.getDescription().replaceAll(" ", "") + ".xls")) {
+                    wb.write(out);
+                    System.out.println("Here!");
+                }
+            } catch (Exception e) {
+            }
+        }
+            
+        
+    }//GEN-LAST:event_exportButtonActionPerformed
 
     void initializeEventsTable() {
         ArrayList<ArrayList<String>> compEvents = new ArrayList<>();
@@ -347,6 +450,7 @@ public class ReviewInfoGUI extends javax.swing.JFrame {
     private javax.swing.JTable completedEventsTable;
     private javax.swing.JButton deleteEventButton;
     private javax.swing.JTable didNotAttendTable;
+    private javax.swing.JButton exportButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

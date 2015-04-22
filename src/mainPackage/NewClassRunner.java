@@ -26,10 +26,15 @@ public class NewClassRunner
     
     public static void main(String[] args)
     {
+        
+        String bitness = System.getProperty("sun.arch.data.model");
+        
+        System.out.println(bitness);
+        
         RARDocument doc = readRAR();
         //System.out.println("RARDocument created, adding new event.");
         //doc.getFutureEvents().add(new Event("Class on WednesDay"));
-        System.out.println(doc.getRoster().getMember(35));
+        //System.out.println(doc.getRoster().getMember(35));
         
         new view.LauncherGUI(doc).setVisible(true);
         //doc = getTestDoc();
