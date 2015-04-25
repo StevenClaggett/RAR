@@ -29,7 +29,28 @@ public class NewClassRunner
         
         String bitness = System.getProperty("sun.arch.data.model");
         
-        System.out.println(bitness);
+        System.out.println("Please Use " + bitness + " rxtxSerial");
+        
+        
+        /*
+        String bitness = System.getProperty("sun.arch.data.model");
+        File nf = null;
+        if (bitness.equals("32"))
+        {
+            nf = new File(".\\lib\\32\\rxtxSerial.dll");
+        } else
+        {
+            nf = new File(".\\lib\\64\\rxtxSerial.dll");
+        }
+        System.out.println(nf.getAbsolutePath());
+        try {
+            System.load(nf.getAbsolutePath());
+            System.out.println("Loaded");
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Couldn't load rxtx!");
+            return;
+        }
+        */
         
         RARDocument doc = readRAR();
         //System.out.println("RARDocument created, adding new event.");
