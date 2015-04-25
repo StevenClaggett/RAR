@@ -129,6 +129,8 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
         
         // if no more invites, might as well close . ..
         
+        /*
+        This was causing a bug in slower computers
         if (event.getInvites().getRosterSet().isEmpty())
         {
             int dialogButton = JOptionPane.YES_NO_OPTION;
@@ -141,6 +143,7 @@ public class EventGUI extends javax.swing.JFrame implements RFIDCallable {
             } 
             
         }
+        */
             
     }
     

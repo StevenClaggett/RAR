@@ -29,7 +29,8 @@ public class NewClassRunner
         
         String bitness = System.getProperty("sun.arch.data.model");
         
-        System.out.println("Please Use " + bitness + " rxtxSerial");
+        System.out.println("Please Use " + bitness + " rxtxSerial"
+                + "\nuse this command style: java -Djava.library.path=\"C:\\path\\to\\rxtxSerial;%PATH%\" -jar \"RARModel.jar\"");
         
         
         /*
